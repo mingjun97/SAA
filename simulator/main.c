@@ -1,4 +1,5 @@
 #include "head.h"
+#include "instructions.c"
      //模拟附加数据段
 unsigned char *MEM;     //用动态存储区模拟内存，大小由命令行参数确定
 unsigned long *PC;      //指令计数器，用来存放下条指令的内存地址
@@ -8,7 +9,9 @@ unsigned long IR;
 unsigned long *CS;      //模拟代码段
 unsigned char *DS;      //模拟数据段
 short *SS;              //模拟堆栈段
+
 /*----------主程序部分----------*/
+
 int main(int argc,char **argv)
 {
     unsigned long instruction;

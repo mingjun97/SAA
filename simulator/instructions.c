@@ -1,4 +1,3 @@
-#include "head.h"
 int HLT(void)//停机指令HLT：终止程序运行
 {
     return 0;

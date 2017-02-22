@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-//#include<io.h>
+#include<linux/io.h>
 #include<string.h>
 #include<math.h>
 /*----------定义宏来模拟指令的解码----------*/
