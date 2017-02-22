@@ -165,4 +165,4 @@ mark:     POP      C
           SAL      B        F       B      # B = F << B
           NOR      E        E       B      # E = E ^ B
           STOREB   E        cell           # ½«E´æÈëcell[G]
-          RET                              # ·µ»Ø
+          RET

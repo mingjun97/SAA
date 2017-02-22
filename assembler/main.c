@@ -1,6 +1,6 @@
 #include "head.h"
 int main(int argc,char* argv[]){
-    int i,line_no=0;
+    int i,line_no=1;
     char status_flag = 0; //flag for wether input the source file
     char * sourcefile,*es;
     char * destionfile;
@@ -25,7 +25,7 @@ int main(int argc,char* argv[]){
         else if (status_flag == 0) {sourcefile = argv[i];status_flag = 1;}
         else {destionfile = argv[i];status_flag = 2;}
     }
-    HashTable* InstructionHashTable;
+    HashTable *saftybuffer = NULL,* InstructionHashTable;
     InstructionHashTable = init_hash_list();
     source = fopen(sourcefile,"r");
     if(source == NULL) {
@@ -40,23 +40,41 @@ int main(int argc,char* argv[]){
     cmd* info;
     char* command;
     int counter=0;
-    command = malloc(MAX_LEN+1);
+    command = malloc(MAX_LEN);
     es = malloc(1); *es = 0;
     while(!feof(source)){
-        fgets(es,MAX_LEN-1,source);
-        if(recognize(command,info,InstructionHashTable,line_no)!=ERROR) {
+        fgets(command,MAX_LEN,source);
+        if(recognize(command,info,InstructionHashTable,line_no,0)!=ERROR) {
+            line_no++;
+            if(info->flag ==1) deal_symbol(command,info->instruction[0],&counter,es);
+        }else{
+            exit(-1);
+        }
+    }
+    line_no = 1;
+    fclose(source);
+    source = fopen(sourcefile,"r");
+    while(!feof(source)){
+        fgets(command,MAX_LEN,source);
+        if(recognize(command,info,InstructionHashTable,line_no,1)!=ERROR) {
             line_no++;
             if(info->flag == 0) {
                 fwrite(info->instruction,4,1,binary);
-            }else{
-                deal_symbol(command,info->instruction[0],&counter,es);
             }
         }else{
             exit(-1);
         }
     }
+    es = realloc(es,((counter - 1)/4 + 1)*4+4);
+    memset(es,'\0',counter);
     fwrite(es,((counter - 1)/4 + 1)*4,1,binary);
+    fwrite((char*)&counter  + 3,1,1,binary);
+    fwrite((char*)&counter  + 2,1,1,binary);
+    fwrite((char*)&counter  + 1,1,1,binary);
+    fwrite(&counter     ,1,1,binary);
     fclose(binary);
     fclose(source);
+    printlog("Complier Success!");
+    getchar();
     exit(1);
 }

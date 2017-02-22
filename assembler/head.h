@@ -5,7 +5,7 @@
 #define SUCCESS 1
 #define INFO 0
 #define MAX_INSTR 34
-#define MAX_LEN 100
+#define MAX_LEN 500
 typedef int status;
 typedef struct {
     char flag;
@@ -13,6 +13,6 @@ typedef struct {
 }cmd;
 typedef struct HashList{
     char * instruction;
-    char instruction_no;
+    int instruction_no;
     struct HashList* next;
 }HashTable;
